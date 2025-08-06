@@ -1,5 +1,7 @@
+# ========== General ==========
+
 # Logs
-logs
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -7,15 +9,73 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# .env
+*.env
+*.env.*
 
-# Editor directories and files
+# ========== Front-end ==========
+
+/Front-end/node_modules/
+/Front-end/dist/
+/Front-end/dist-ssr/
+/Front-end/.next/         # nếu dùng Next.js
+/Front-end/build/         # nếu dùng Vite/React build
+/Front-end/.turbo/        # nếu dùng Turborepo
+
+# ========== Back-end ==========
+
+/Back-end/node_modules/
+/Back-end/dist/
+/Back-end/build/
+/Back-end/.turbo/
+
+# ========== Editor / System ==========
+
 .vscode/*
 !.vscode/extensions.json
-.idea
+.idea/
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+# ========== General ==========
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# .env
+*.env
+*.env.*
+
+# ========== Front-end ==========
+
+/Front-end/node_modules/
+/Front-end/dist/
+/Front-end/dist-ssr/
+/Front-end/.next/         # nếu dùng Next.js
+/Front-end/build/         # nếu dùng Vite/React build
+/Front-end/.turbo/        # nếu dùng Turborepo
+
+# ========== Back-end ==========
+
+/Back-end/node_modules/
+/Back-end/dist/
+/Back-end/build/
+/Back-end/.turbo/
+
+# ========== Editor / System ==========
+
+.vscode/*
+!.vscode/extensions.json
+.idea/
 .DS_Store
 *.suo
 *.ntvs*

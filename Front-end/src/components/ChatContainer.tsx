@@ -7,6 +7,7 @@ type Message = {
 export default function ChatContainer() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
+  const [isAnswering, setIsAnswering] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -15,17 +16,20 @@ export default function ChatContainer() {
   }, [messages]);
 
   const handleSend = () => {
+    if (isAnswering) return; // Không gửi khi AI đang trả lời
     if (!input.trim()) return;
     setMessages([...messages, { role: "user", content: input }]);
     setInput("");
 
     // TODO: call AI API here and update messages with AI response
+    setIsAnswering(true);
     setTimeout(() => {
       setMessages((prev) => [
         ...prev,
         { role: "ai", content: "Mình đang lắng nghe bạn nè..." },
       ]);
-    }, 800);
+      setIsAnswering(false);
+    }, 2000);
   };
 
   return (
@@ -45,9 +49,10 @@ export default function ChatContainer() {
             }`}
           >
             {msg.content}
-            <div ref={bottomRef} />
           </div>
         ))}
+        {isAnswering && <div className="text-gray-500">AI đang trả lời...</div>}
+        <div ref={bottomRef} />
       </div>
 
       {/* Input */}
@@ -66,7 +71,7 @@ export default function ChatContainer() {
         />
         <button
           onClick={handleSend}
-          className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-md"
+          className={`${isAnswering?"bg-red-500":"bg-blue-500"} hover:bg-blue-600 text-white p-2 rounded-md`}
         >
           <Send size={18} />
         </button>

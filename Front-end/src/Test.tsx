@@ -1,4 +1,5 @@
-import { Mic } from "lucide-react";
+// import { Mic } from "lucide-react";
+import Microphone from "./components/Microphone";
 import ChatContainer from "./components/ChatContainer";
 
 export default function AiListener() {
@@ -12,9 +13,12 @@ export default function AiListener() {
         </div>
 
         {/* Microphone button */}
-        <button className="absolute bottom-6 bg-white p-4 rounded-full shadow-xl hover:scale-110 transition">
+        <div className="absolute bottom-6">
+          <Microphone />
+        </div>
+        {/* <button className="absolute bottom-6 bg-white p-4 rounded-full shadow-xl hover:scale-110 transition">
           <Mic className="text-gray-700" />
-        </button>
+        </button> */}
       </div>
 
       {/* Chatbox Panel */}
