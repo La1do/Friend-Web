@@ -1,13 +1,22 @@
 import { useEffect, useRef, useState } from "react";
 import { Mic } from "lucide-react"; // Optional icon
-
+import { useSearch } from "../contexts/Test.tsx"; // Import context if needed
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
 export default function Microphone() {
-  const [listening, setListening] = useState(false);
+  // const [listening, setListening] = useState(false);
   const [scale, setScale] = useState(1);
   const audioContextRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
   const animationRef = useRef<number>(null);
-
+  const { setSearchTerm } = useSearch();
+  const {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition,
+  } = useSpeechRecognition();
   useEffect(() => {
     return () => {
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
@@ -16,6 +25,7 @@ export default function Microphone() {
   }, []);
 
   const startListening = async () => {
+    if(transcript) resetTranscript(); // Reset transcript if needed
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     const audioContext = new AudioContext();
     audioContextRef.current = audioContext;
@@ -40,15 +50,25 @@ export default function Microphone() {
     };
 
     animate();
-    setListening(true);
+    // setListening(true);
+    SpeechRecognition.startListening({ continuous: true, language: "en-US" });
+    
   };
 
   const stopListening = () => {
     audioContextRef.current?.close();
     if (animationRef.current) cancelAnimationFrame(animationRef.current);
-    setListening(false);
+    // setListening(false)
     setScale(1);
+    setSearchTerm(transcript);
+    // console.log("Transcript:", transcript); // Log the transcript
+    SpeechRecognition.stopListening();
+    
+    
   };
+  if (!browserSupportsSpeechRecognition) {
+    return <span>Browser doesn't support speech recognition.</span>;
+  }
 
   return (
     <div className="flex flex-col items-center justify-center  bg-gray-100">
@@ -59,7 +79,7 @@ export default function Microphone() {
         {/* Blinking circle around mic */}
         {listening && (
           <div
-            className="absolute rounded-full bg-[#948dd4] opacity-50 transition-transform duration-100"
+            className="absolute rounded-full bg-[#b3aee5] opacity-50 transition-transform duration-100"
             style={{
               width: "80%",
               height: "80%",
@@ -69,10 +89,16 @@ export default function Microphone() {
         )}
         {/* Mic icon (You can replace with actual icon/image) */}
         <button className=" bg-white p-4 rounded-full shadow-xl hover:scale-110 transition z-10">
-          <Mic className="text-gray-700 " />
+          <Mic
+            className={`${listening ? "text-[#3726f4]" : "text-gray-700"}`}
+          />
         </button>
       </button>
-      <p className="mt-3 text-gray-600 z-10">
+      <p
+        className={`${
+          listening ? "text-[#3726f4]" : "text-gray-700"
+        } mt-[1rem] z-10`}
+      >
         {listening ? "Listening..." : "Tap to talk"}
       </p>
     </div>

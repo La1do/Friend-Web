@@ -13,7 +13,7 @@ export default function AiListener() {
         </div>
 
         {/* Microphone button */}
-        <div className="absolute bottom-6">
+        <div className="absolute bottom-9">
           <Microphone />
         </div>
         {/* <button className="absolute bottom-6 bg-white p-4 rounded-full shadow-xl hover:scale-110 transition">

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Send } from "lucide-react";
+import { useSearch } from "../contexts/Test";
 type Message = {
   role: "user" | "ai";
   content: string;
@@ -9,11 +10,13 @@ export default function ChatContainer() {
   const [input, setInput] = useState("");
   const [isAnswering, setIsAnswering] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const { searchTerm} = useSearch();
 
   useEffect(() => {
     // Scroll xuống cuối khi messages thay đổi
+    setInput(searchTerm);
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, [messages, searchTerm]);
 
   const handleSend = () => {
     if (isAnswering) return; // Không gửi khi AI đang trả lời
